@@ -6,7 +6,7 @@
 user.name 							= cookie.CURRENT_USER_NAME;
 user.id 							= cookie.CURRENT_USER_ID;
 presenter_id 						= cookie.CURRENT_USER_ID;
-
+//this is a test
   // Include shared functions
   include "/common/shared_functions.cfm";
   

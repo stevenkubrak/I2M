@@ -23,9 +23,11 @@ presenter_id 						= cookie.CURRENT_USER_ID;
 	request.qGetPeople					= request.people_cfc.selPeopleForDrowdown('Y');
 	request.getMaxComplaint				= request.initiation_cfc.selMaxComplaint();
 	request.q_permissions 				= getPermissions(cookie.current_user_id,11);
-	 
 	request.getAllStaff					= request.complaint_staff_pkg_cfc.getAllStaff(url.id);
-   
+   	request.qGetPeople					= request.people_cfc.selPeopleForDrowdown('Y');
+	
+
+	list_people								=	#valueList(request.qGetPeople.person_id)#;
    
   }
   catch(any excpt){handleError(excpt);}
@@ -42,8 +44,8 @@ presenter_id 						= cookie.CURRENT_USER_ID;
   
 
 
-WriteDump(var=request.getAllStaff,label="getAllStaff",expand=false);//Debugging only
-
+WriteDump(var=request.qGetPeople,label="qGetPeople",expand=false);//Debugging only
+WriteDump(var=list_people,label="list_people",expand=false);//Debugging only
 </cfscript>
 <cfif structKeyExists(request,'page_has_errors') and request.page_has_errors eq true>
   <igems:page-error err_message="#request.page_load_error_message#">
@@ -89,13 +91,37 @@ WriteDump(var=request.getAllStaff,label="getAllStaff",expand=false);//Debugging 
             </thead>
             
         <tbody>
-        
+
+
+<!---    <div class="form-group" id="agent_group">
+		<div class="col-md-8">
+        <label class="control-label" for="case_agent">Staff</label>
+        <select class="form-control" name="case_agent" id="case_agent" title="Case Agent">
+        <cfloop query="request.qGetPeople">
+             <option value="#PERSON_ID#"#isSelected(request.getAllStaff.EMPLOYEE_ID)# >#full_name#</option>
+        </cfloop>
+        </select>
+     	</div>
+    </div>
+ --->
+
+
+
+
+
+
             <!---See All Current Staff ---> 
                <cfloop query="request.getAllStaff">
                 <tr>
                     <td>#DateFormat(request.getAllStaff.ASSIGNED_DATE, "mm/dd/yyyy")#</td>
                     <td>#DateFormat(request.getAllStaff.RELEASED_DATE, "mm/dd/yyyy")#</td>
-                    <td>#request.getAllStaff.EMPLOYEE_ID#</td>
+
+                    <td>#request.getAllStaff.EMPLOYEE_ID#<br />
+                    
+                    <!---NEED TO DO A JOIN IN THE DB. THIS ISNT WORKING --->
+						<cfif #isInListTF(list_people,request.getAllStaff.EMPLOYEE_ID)#>#request.qGetPeople.FULL_NAME#</cfif> 
+                    </td>
+                    
                     <td>#request.getAllStaff.ROLE_CODE#</td>
                     <td>#request.getAllStaff.PERMISSION_CODE#</td>
                     <td>#request.getAllStaff.TIME_ADD#</td>

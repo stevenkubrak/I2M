@@ -96,10 +96,10 @@ History:
 
 <cfoutput>
 
-
+<!---action="#application.base_path#/models/complaints/staff/act_add_complaint_staff.cfm?id=#url.id#"  --->
 
 <form 
-action="#application.base_path#/models/complaints/staff/act_add_complaint_staff.cfm?id=#url.id#" 
+action="#application.base_path#/models/complaints/staff/act_add_complaint_staff.cfm" 
 class="form" 
 id="initcomplaint_staff" 
 name="initcomplaint_staff" 
@@ -116,13 +116,14 @@ enctype="multipart/form-data">
     </div>  
     
  <input type="hidden" value="#cookie.current_user_id#" name="user_id">
+ <input type="hidden" value="#url.id#" name="case_id">
 
     <div class="form-group" id="agent_group">
 		<div class="col-md-8">
         <label class="control-label" for="case_agent">Staff</label>
         <select class="form-control" name="case_agent" id="case_agent" title="Case Agent">
         <cfloop query="request.qGetPeople">
-             <option value="#PERSON_ID#"#isSelected(PERSON_ID,cookie.current_user_id)# >#PERSON_ID# #full_name#</option>
+             <option value="#PERSON_ID#"#isSelected(PERSON_ID,cookie.current_user_id)# >#full_name#</option>
         </cfloop>
         </select>
      	</div>
